@@ -33,6 +33,8 @@ int main() {
 	//add nodes to list
 	cout << "------------------------------" << endl;
 	SLinkedList myList;
+	cout << "------------------------------" << endl;
+
 	myList.add(A, 1);
 	myList.add(B, 2);
 	myList.add(C, 3);
