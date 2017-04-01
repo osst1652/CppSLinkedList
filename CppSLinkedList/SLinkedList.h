@@ -2,7 +2,7 @@
 #define SLINKEDLIST_H
 
 #include <iostream>
-
+#include <string>
 namespace LinkedList{
 /*
 	Nod

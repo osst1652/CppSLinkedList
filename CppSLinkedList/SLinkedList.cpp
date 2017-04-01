@@ -93,11 +93,34 @@ namespace LinkedList {
 
 	void SLinkedList::print() 
 	{
+		int count = 0;
+		node * current = head;
+		node * currentNext = head;
+		cout << "-" << endl;
+		while (currentNext) 
+		{
+			current = currentNext;
+			cout << "Current position: " << count << endl;
+			cout << "current data: " << current->data << endl;
+			cout << "current text: " << current->text << endl;
 
+			currentNext = current->next;
+			count++;
+		}
 	}
 
+	//Destructor
+	//de-allocates memory
 	SLinkedList::~SLinkedList()
 	{
+		node * current = head;
+		node * currentNext = head;
+		while (currentNext) 
+		{
+			current = currentNext;
+			currentNext = current->next;
+			if (currentNext) delete current;
+		}
 	}
 
 
