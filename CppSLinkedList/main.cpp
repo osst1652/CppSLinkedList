@@ -72,5 +72,7 @@ int main() {
 	cout << "Print current list" << endl;
 	myList.print();
 
+
+	cout << "end of list" << endl;
 	return 0;
 }
