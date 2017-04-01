@@ -2,6 +2,8 @@
 #define SLINKEDLIST_H
 
 #include <iostream>
+
+namespace LinkedList{
 /*
 	Nod
 */
@@ -35,5 +37,7 @@ public:
 	~SLinkedList();
 };
 
+
+}
 
 #endif
