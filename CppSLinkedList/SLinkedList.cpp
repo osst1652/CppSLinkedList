@@ -1,127 +1,86 @@
 #include "SLinkedList.h"
 
-using namespace std;
-namespace LinkedList {
+template <class T> Node<T>::Node() {};
+template <class T> Node<T>::Node(T d) { data = d; }
+template <class T> T Node<T>::getObject() { return data; }
 
-	//Default constructor to create list
-	SLinkedList::SLinkedList()
-	{
-		head->text = "head (contains no info)";
-		head->data = NULL;
-		head->next = NULL;
-		listLength = 0;
+template<class T> LListIterator<T>::LListIterator(Node<T>* head) {
+	currentNode = head;
+}
 
+template<class T> T LListIterator<T>::next() {
+	Node<T>* temp = currentNode;
+
+	currentNode = currentNode->next;
+
+	return currentNode->getObject();
+
+};
+
+/*
+	Konstruktor & destruktor
+*/
+
+template <class T> SLinkedList<T>::SLinkedList(T init) {
+	head = new Node<T>;
+
+	current = new Node<T>(init);
+	head->next = current;
+
+	current->next = head;
+
+	size = 1;
+};
+
+template <class T> SLinkedList<T>::~SLinkedList() {
+	for (int i = 0; i < size; i++) {
+		Node<T>* temp = head->next;
+		head->next = head->next->next;
+		delete temp;
 	}
+	delete head;
+}
 
-	bool SLinkedList::add(node* newNode, int pos) 
-	{
-		//OutOufBounds
-		if ((pos <= 0) || (pos > listLength + 1)) 
-		{
-			cerr << "Add error: param pos out of range" << endl;
-			return false;
-		}
-		//If next is null, make a new node in next
-		if (head->next == NULL) 
-		{
-			head->next = newNode;
-			listLength++;
-			return true;
-		}
-		int count = 0;
-		node * current = head;
-		node * currentNext = head;
-		while (currentNext) 
-		{
-			if (count == pos) 
-			{
-				current->next = newNode;
-				newNode->next = currentNext;
-				listLength++;
-				return true;
-			}
-			current = currentNext;
-			currentNext = current->next;
-			count++;
-		}
-		if (count == pos) 
-		{
-			current->next = newNode;
-			newNode->next = currentNext;
-			listLength++;
-			return true;
-		}
-		cerr << "Add Error: node was not added to list" << endl;
-		return false;
+//Add
+//Linked head for circular 
+template <class T> void SLinkedList<T>::add(T data) {
+	Node<T>* temp = current;
+
+	current->next = new Node<T>(data);
+	current = current->next;
+	current->next = head;
+
+	size += 1;
+}
+
+//Remove
+//Param pos is the node to remove
+
+template<class T> void SLinkedList<T>::remove(int pos) {
+	if (pos <= 0) {
+		std::cerr << "Out of range to remove"
 	}
-
-	//removes target node
-	//True if successful, false if not removed
-	bool SLinkedList::remove(int pos) 
-	{
-		if ((pos == 0) || (pos > listLength + 1)) 
-		{
-			cerr << "Remove error: param position out of range" << endl;
-			return false;
+	else if (size > 0 && pos <= size) {
+		Node<T>* temp = head;
+		for (int i = 0; i < pos + 1; i++) {
+			temp = temp->next;
 		}
-		if(head->next == NULL)
-		{
-			cerr << "Remove error: nothing to remove";
-			return false;
-		}
-		int count = 0;
-		node * current = head;
-		node * currentNext = head;
-		while (currentNext) 
-		{
-			//If position found
-			if (count == pos) 
-			{
-				//Remove the link to the node
-				current->next = currentNext->next;
-				delete currentNext;
-				listLength--;
-				return true;
-			}
-			current = currentNext;
-			currentNext = current->next;
-			count++;
-		}
-		cerr << "Remove error: nothing was removed from the list" << endl;
-		return false;
+		delete temp->next;
+		temp->next = temp->next->next;
+		size -= 1;
 	}
-
-	void SLinkedList::print() 
-	{
-		int count = 0;
-		node * current = head;
-		node * currentNext = head;
-		cout << "-" << endl;
-		while (currentNext) 
-		{
-			current = currentNext;
-			cout << "Current position: " << count << endl;
-			cout << "current data: " << current->data << endl;
-			cout << "current text: " << current->text << endl;
-
-			currentNext = current->next;
-			count++;
-		}
+	else if (size > 0 && pos > size) {
+		std::cerr << "List does not have " << pos << " elements.\n";
 	}
-
-	//Destructor
-	//de-allocates memory
-	SLinkedList::~SLinkedList()
-	{
-		node * current = head;
-		node * currentNext = head;
-		while (currentNext) 
-		{
-			current = currentNext;
-			currentNext = current->next;
-			if (currentNext) delete current;
-		}
+	else if (size == 0) {
+		std::cerr << "Empty list \n";
 	}
+}
 
+template<class T> int SLinkedList<T>::getSize() {
+	return size;
+}
 
+template<class T> LListIterator<T> SLinkedList<T>::getIterator() {
+	return LListIterator<T>(head);
 }

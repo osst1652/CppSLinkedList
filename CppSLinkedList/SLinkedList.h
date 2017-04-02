@@ -2,42 +2,43 @@
 #define SLINKEDLIST_H
 
 #include <iostream>
-#include <string>
-namespace LinkedList{
-/*
-	Nod
-*/
-struct node 
-{
-	int data;
-	std::string text;
-	node * next; 
-};
+#include <iterator>
 
-/*
-	Linked list header
-*/
-class SLinkedList
-{
-private:
-	node * head;
-	int listLength;
-
+template <class T> class Node {
 public:
-	//Default constructor
-	SLinkedList();
-	
-	bool add(node* newNode, int pos);
+	Node();
+	Node(T object);
+	T getObject();
+	Node* next;
 
-	bool remove(int pos);
+private:
+	T data;
+};
+template <class T> class LListIterator {
+public:
+	LListIterator(Node<T>* head);
+	T next();
 
-	void print();
-
-	//Default destructor
-	~SLinkedList();
+private:
+	Node<T>* currentNode;
 };
 
+template<class T> struct SLinkedList {
+public:
+	SLinkedList(T initObj);
+	~SLinkedList();
 
-}
+	void add(T add);
+	void remove(int pos);
+	int getSize();
+	LListIterator<T> getIterator();
+
+private:
+
+	Node<T>* head;
+	Node<T>* current;
+	int size;
+};
+
 
 #endif
